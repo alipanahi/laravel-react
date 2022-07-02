@@ -1,51 +1,90 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
+<a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a>
+<img src="https://blog.wildix.com/wp-content/uploads/2020/06/react-logo.jpg" width="400">
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## Creating a Modern Application: Using Laravel With React.js
 
-## About Laravel
+Laravel has come a long way, and the options for creating modern, reactive web applications using the framework are many. There's Inertia.js, Alpine.js, Livewire, and more. But the framework hasn't said goodbye to the old ways of doing things. It's still possible and very straightforward to set up Vue or React with a Laravel project.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## New Laravel Project
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+Let's start by creating a new Laravel project anywhere on your local computer.
+by running the following command, a fresh laravel 8 project will be installed on your local machine:
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+```
+composer create-project laravel/laravel:^8.0 laravel-react-project
+```
 
-## Learning Laravel
+## install npm
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+in order to use ReacJs we need npm:
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+```
+npm install
+```
+After the installation finishes, execute the following command to test if everything's functional or not:
 
-## Laravel Sponsors
+```
+npm run dev
+```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+## install ReactJs
 
-### Premium Partners
+Let's go ahead and start bringing React into the scene to see the whole process of using Laravel with React.js. First, you'll have to install two new JavaScript libraries. They are the react and react-dom libraries. To do so, execute the following command:
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+```
+npm install --save-dev react react-dom
+```
+t'll install the libraries as development dependencies. The reason behind installing them as development dependencies is that you'll compile all your JavaScript code into a single file and attach that with your Blade templates.
+Create a new folder resources/js/components/ and put the js file of your ReactJs in there.
+To make this usable throughout your entire application, you'll have to include this in your JavaScript code bundle. To do so, open the resoureces/js/app.js file and update its code as follows:
+
+```
+// put your js file created before instead of HelloReact
+require('./components/HelloReact')
+```
+You'll have to change the Laravel Mix configuration so that it can compile the React component properly. To do so, open the webpack.mix.js file from the project root and update its code as follows:
+
+```
+mix.js('resources/js/app.js', 'public/js')
+    .react()
+    .sass('resources/sass/app.scss', 'public/css');
+/*
+put your css file here in order to be used in your ReactJs components
+*/
+mix.styles([
+    'public/css/style.css'
+], 'public/css/all.css');
+```
+After updating the Laravel Mix configuration, execute the npm run dev command once again.
+Now that the component is ready to use, you'll have to prepare a blade template. Open the resources/views/welcome.blade.php file and update its content as follows:
+
+```
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Laravel React</title>
+
+    <script src="{{ asset('js/app.js') }}" defer></script>
+</head>
+<body>
+    <div id="hello-react"></div>
+</body>
+</html>
+```
+Make sure that you defer the script execution or put it just before the body tag ends. Also, make sure to match the element ID with the ID you wrote in the React component's render() function. 
+Now start the development server by executing php artisan serve and visit http://localhost:8000 using your favorite browser. 
+after editing the code you need to run the npm run dev,
+Instead of executing the npm run dev command, again and again, you can execute the:
+
+```
+npm run watch
+OR
+npm run watch-poll
+```
+command, which keeps an eye on your files and compiles them automatically on change.
 
 ## Contributing
 
@@ -54,10 +93,6 @@ Thank you for considering contributing to the Laravel framework! The contributio
 ## Code of Conduct
 
 In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
 
 ## License
 
